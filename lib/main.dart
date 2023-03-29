@@ -1,4 +1,5 @@
 import 'package:ask_anything/constant/constants.dart';
+import 'package:ask_anything/providers/chats_provider.dart';
 import 'package:ask_anything/providers/models_provider.dart';
 import 'package:ask_anything/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ModelsProvider()),
+        ChangeNotifierProvider(create: (_) => ChatProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

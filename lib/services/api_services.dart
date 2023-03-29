@@ -42,11 +42,8 @@ class ApiService {
           "Authorization": "Bearer $API_KEY",
           "Content-Type": "application/json"
         },
-        body: jsonEncode({
-          "model": "text-davinci-003",
-          "prompt": "Hello what is flutter",
-          "max_tokens": 100
-        }),
+        body: jsonEncode(
+            {"model": modelId, "prompt": message, "max_tokens": 100}),
       );
 
       Map jsonResponse = jsonDecode(response.body);
