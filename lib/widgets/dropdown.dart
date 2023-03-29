@@ -1,9 +1,11 @@
 import 'package:ask_anything/constant/constants.dart';
+import 'package:ask_anything/providers/models_provider.dart';
 import 'package:ask_anything/services/api_services.dart';
 import 'package:ask_anything/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
 
 class ModelsDropDown extends StatefulWidget {
   const ModelsDropDown({super.key});
@@ -13,11 +15,13 @@ class ModelsDropDown extends StatefulWidget {
 }
 
 class _ModelsDropDownState extends State<ModelsDropDown> {
-  String currentModel = "text-davinci-003";
+  String? currentModel;
   @override
   Widget build(BuildContext context) {
+    final modelsProvider = Provider.of<ModelsProvider>(context, listen: false);
+    currentModel = modelsProvider.getCurrentModel;
     return FutureBuilder(
-        future: ApiService.getModels(),
+        future: modelsProvider.getAllModels(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -45,6 +49,9 @@ class _ModelsDropDownState extends State<ModelsDropDown> {
                         setState(() {
                           currentModel = value.toString();
                         });
+                        modelsProvider.setCurrentModel(
+                          value.toString(),
+                        );
                       }),
                 );
         });

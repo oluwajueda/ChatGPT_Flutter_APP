@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:ask_anything/constant/constants.dart';
+import 'package:ask_anything/providers/models_provider.dart';
 import 'package:ask_anything/services/api_services.dart';
 import 'package:ask_anything/services/assets_manager.dart';
 import 'package:ask_anything/services/services.dart';
@@ -8,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -29,6 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final modelsProvider = Provider.of<ModelsProvider>(context).getCurrentModel;
     return Scaffold(
         appBar: AppBar(
           title: const Text("ChatGPT"),
@@ -91,9 +96,18 @@ class _ChatScreenState extends State<ChatScreen> {
                     IconButton(
                         onPressed: () async {
                           try {
-                            await ApiService.getModels();
+                            setState(() {
+                              _isTyping = true;
+                            });
+                            final list = await ApiService.sendMessages(
+                                message: textEditingController.text,
+                                modelId: modelsProvider);
                           } catch (e) {
                             print("e $e");
+                          } finally {
+                            setState(() {
+                              _isTyping = false;
+                            });
                           }
                         },
                         icon: const Icon(
