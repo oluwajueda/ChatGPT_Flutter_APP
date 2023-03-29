@@ -1,5 +1,7 @@
 import 'package:ask_anything/constant/constants.dart';
+import 'package:ask_anything/services/api_services.dart';
 import 'package:ask_anything/services/assets_manager.dart';
+import 'package:ask_anything/services/services.dart';
 import 'package:ask_anything/widgets/chat_widget.dart';
 import 'package:ask_anything/widgets/text_widget.dart';
 import 'package:flutter/material.dart';
@@ -33,27 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
           actions: [
             IconButton(
                 onPressed: () async {
-                  await showModalBottomSheet(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(20))),
-                      backgroundColor: scaffoldBackgroundColor,
-                      context: context,
-                      builder: (context) {
-                        return Padding(
-                          padding: const EdgeInsets.all(18.0),
-                          child: Row(
-                            children: [
-                              Flexible(
-                                child: TextWidget(
-                                  label: "chosen Model",
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      });
+                  await Services.showModalSheet(context: context);
                 },
                 icon: const Icon(
                   Icons.more_vert_rounded,
@@ -107,7 +89,13 @@ class _ChatScreenState extends State<ChatScreen> {
                           hintStyle: TextStyle(color: Colors.grey)),
                     )),
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            await ApiService.getModels();
+                          } catch (e) {
+                            print("e $e");
+                          }
+                        },
                         icon: const Icon(
                           Icons.send,
                           color: Colors.white,
