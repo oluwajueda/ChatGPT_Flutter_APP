@@ -15,13 +15,15 @@ List<String> models = [
 List<DropdownMenuItem<String>>? get getModelsItem {
   List<DropdownMenuItem<String>>? modelsItems =
       List<DropdownMenuItem<String>>.generate(
-          models.length,
-          (index) => DropdownMenuItem(
-              value: models[index],
-              child: TextWidget(
-                label: models[index],
-                fontSize: 15,
-              )));
+    models.length,
+    (index) => DropdownMenuItem(
+      value: models[index],
+      child: TextWidget(
+        label: models[index],
+        fontSize: 15,
+      ),
+    ),
+  );
   return modelsItems;
 }
 
